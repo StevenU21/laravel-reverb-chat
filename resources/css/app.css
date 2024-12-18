@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Animación de desvanecimiento */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .fade-in {
+    animation: fadeIn 0.5s ease-in;
+  }
+
+  /* Animación de deslizamiento */
+  @keyframes slideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .slide-in {
+    animation: slideIn 0.5s ease-out;
+  }
+
+  /* Animación de parpadeo */
+  @keyframes blink {
+    0%, 100% { background-color: #f0f0f0; }
+    50% { background-color: #e0e0e0; }
+  }
+
+  .blink {
+    animation: blink 1s ease-in-out;
+  }
+
+  /* Animación de deslizamiento desde la derecha */
+  @keyframes slideInRight {
+    from { transform: translateX(20px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+
+  .slide-in-right {
+    animation: slideInRight 0.5s ease-out;
+  }
+
+  /* Animación de parpadeo del indicador de escritura */
+  @keyframes typingBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  .typing-indicator {
+    animation: typingBlink 1s infinite;
+  }
