@@ -1,8 +1,6 @@
 <?php
 namespace App\Events;
 
-use App\Models\Conversation;
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
@@ -15,12 +13,6 @@ class MessageReadEvent implements ShouldBroadcastNow
 
     public $conversationId;
     public $userId;
-
-    // public function __construct($conversationId, $userId)
-    // {
-    //     $this->conversationId = $conversationId;
-    //     $this->userId = $userId;
-    // }
 
     public function __construct($conversationId, $userId, $messages)
     {
