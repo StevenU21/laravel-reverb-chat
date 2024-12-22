@@ -5,10 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\MessageReadEvent;
 use App\Events\MessageSentEvent;
 use App\Http\Requests\MessageRequest;
-use App\Models\Conversation;
 use App\Models\Message;
-use Illuminate\Http\Request;
-
 class MessageController extends Controller
 {
     public function store(MessageRequest $request)
