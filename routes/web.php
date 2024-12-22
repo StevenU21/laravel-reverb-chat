@@ -25,6 +25,8 @@ Route::middleware('auth')->group(function () {
 
     // ChatBot Routes //
     Route::get('/chatbot', [ChatbotController::class, 'index'])->name('chatbot.index');
+
+    // News Routes //
 });
 
 require __DIR__ . '/auth.php';
