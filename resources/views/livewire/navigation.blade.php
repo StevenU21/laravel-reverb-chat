@@ -22,6 +22,12 @@
                         {{ __('Conversations') }}
                     </x-nav-link>
                 </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('chatbot.index')" :active="request()->routeIs('conversations.index')" wire:navigate>
+                        {{ __('Chatbot') }}
+                    </x-nav-link>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->

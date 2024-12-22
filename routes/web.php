@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MessageController;
@@ -21,6 +22,9 @@ Route::middleware('auth')->group(function () {
     // Messages Routes //
     Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
     Route::patch('/messages/{conversationId}', [MessageController::class, 'markAsRead'])->name('messages.markAsRead');
+
+    // ChatBot Routes //
+    Route::get('/chatbot', [ChatbotController::class, 'index'])->name('chatbot.index');
 });
 
 require __DIR__ . '/auth.php';
