@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ChatbotRequest;
 use App\Services\ChatbotService;
 use Illuminate\Http\JsonResponse;
-use OpenAI\Laravel\Facades\OpenAI;
 
 class ChatbotController extends Controller
 {

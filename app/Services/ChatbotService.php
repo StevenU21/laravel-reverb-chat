@@ -6,17 +6,10 @@ use OpenAI\Laravel\Facades\OpenAI;
 
 class ChatbotService
 {
-    protected $openAI;
-
-    public function __construct(OpenAI $openAI)
-    {
-        $this->openAI = $openAI;
-    }
-
     public function sendMessageToOpenAI(string $userMessage): array
     {
-        $chatbotResponse = $this->openAI->chat()->create([
-            'model' => 'gpt-3.5-turbo',
+        $chatbotResponse = OpenAI::chat()->create([
+            'model' => 'gpt-4o-mini',
             'messages' => [
                 [
                     'role' => 'system',
