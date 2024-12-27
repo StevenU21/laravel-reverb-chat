@@ -1,5 +1,6 @@
 import './bootstrap';
 import './chat';
+import './chatbot';
 
 import Alpine from 'alpinejs';
 

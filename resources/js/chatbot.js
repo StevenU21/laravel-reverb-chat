@@ -1,10 +1,10 @@
-$(document).ready(function () {
+document.addEventListener('DOMContentLoaded', function () {
     // Capturar el evento de envío del formulario
-    $('#message-form').on('submit', function (e) {
+    document.getElementById('message-form').addEventListener('submit', function (e) {
         e.preventDefault(); // Prevenir el envío predeterminado del formulario
 
-        const messageContent = $('#message-content').val().trim();
-        const messageContainer = $('#message-container');
+        const messageContent = document.getElementById('message-content').value.trim();
+        const messageContainer = document.getElementById('message-container');
 
         // Validar que el mensaje no esté vacío
         if (messageContent === '') {
@@ -23,61 +23,59 @@ $(document).ready(function () {
                 </div>
             </div>
         `;
-        messageContainer.append(userMessageHtml);
+        messageContainer.insertAdjacentHTML('beforeend', userMessageHtml);
 
         // Limpiar el input
-        $('#message-content').val('');
+        document.getElementById('message-content').value = '';
 
         // Scroll al final
-        messageContainer.scrollTop(messageContainer[0].scrollHeight);
+        messageContainer.scrollTop = messageContainer.scrollHeight;
 
         // Mostrar el indicador de "escribiendo"
-        $('#typing-indicator').text('Chatbot is typing...');
+        document.getElementById('typing-indicator').textContent = 'Chatbot is typing...';
 
-        // Enviar la solicitud AJAX al servidor
-        $.ajax({
-            url: '/chatbot/post',
+        // Enviar la solicitud Fetch al servidor
+        fetch('/chatbot/post', {
             method: 'POST',
-            data: { message: messageContent },
             headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             },
-            success: function (response) {
-                // Ocultar el indicador de "escribiendo"
-                $('#typing-indicator').text('');
+            body: JSON.stringify({ message: messageContent })
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('typing-indicator').textContent = '';
 
-                // Mostrar la respuesta del chatbot
-                const botMessageHtml = `
-                    <div class="mb-4 text-left">
-                        <div class="inline-block bg-gray-300 text-gray-900 p-2 rounded-lg max-w-full break-words">
-                            <div class="font-bold">Chatbot</div>
-                            <div>${response.message}</div>
-                            <div class="text-xs text-gray-600 mt-1">${new Date().toLocaleTimeString()}</div>
-                        </div>
+            // Mostrar la respuesta del chatbot
+            const botMessageHtml = `
+                <div class="mb-4 text-left">
+                    <div class="inline-block bg-gray-300 text-gray-900 p-2 rounded-lg max-w-full break-words">
+                        <div class="font-bold">Chatbot</div>
+                        <div>${data.bot_message}</div>
+                        <div class="text-xs text-gray-600 mt-1">${new Date().toLocaleTimeString()}</div>
                     </div>
-                `;
-                messageContainer.append(botMessageHtml);
+                </div>
+            `;
+            messageContainer.insertAdjacentHTML('beforeend', botMessageHtml);
 
-                // Scroll al final
-                messageContainer.scrollTop(messageContainer[0].scrollHeight);
-            },
-            error: function (xhr) {
-                // Ocultar el indicador de "escribiendo"
-                $('#typing-indicator').text('');
+            // Scroll al final
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        })
+        .catch(error => {
+            document.getElementById('typing-indicator').textContent = '';
 
-                // Manejar errores
-                const errorMessageHtml = `
-                    <div class="mb-4 text-left">
-                        <div class="inline-block bg-red-500 text-white p-2 rounded-lg max-w-full break-words">
-                            <div>Error: No se pudo procesar tu mensaje. Inténtalo más tarde.</div>
-                        </div>
+            const errorMessageHtml = `
+                <div class="mb-4 text-left">
+                    <div class="inline-block bg-red-500 text-gray p-2 rounded-lg max-w-full break-words">
+                        <div>Error: No se pudo procesar tu mensaje. Inténtalo más tarde.</div>
                     </div>
-                `;
-                messageContainer.append(errorMessageHtml);
+                </div>
+            `;
+            messageContainer.insertAdjacentHTML('beforeend', errorMessageHtml);
 
-                // Scroll al final
-                messageContainer.scrollTop(messageContainer[0].scrollHeight);
-            }
+            // Scroll al final
+            messageContainer.scrollTop = messageContainer.scrollHeight;
         });
     });
 });
