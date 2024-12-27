@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Conversation;
 use App\Models\User;
+use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index():View
     {
         $userId = auth()->id();
         $existingConversationUserIds = Conversation::getUserIdsWithConversations($userId);

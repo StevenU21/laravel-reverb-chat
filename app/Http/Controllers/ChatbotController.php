@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ChatbotRequest;
 use App\Services\ChatbotService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\View\View;
 
 class ChatbotController extends Controller
 {
@@ -15,7 +16,7 @@ class ChatbotController extends Controller
         $this->chatbotService = $chatbotService;
     }
 
-    public function index()
+    public function index():View
     {
         return view('chatbot.index');
     }

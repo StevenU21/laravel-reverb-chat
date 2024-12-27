@@ -6,9 +6,10 @@ use App\Events\MessageReadEvent;
 use App\Events\MessageSentEvent;
 use App\Http\Requests\MessageRequest;
 use App\Models\Message;
+use Illuminate\Http\JsonResponse;
 class MessageController extends Controller
 {
-    public function store(MessageRequest $request)
+    public function store(MessageRequest $request): JsonResponse
     {
         $message = Message::create($request->validated() + [
             'sender_id' => auth()->id(),
@@ -20,7 +21,7 @@ class MessageController extends Controller
             'data' => $message
         ]);
     }
-    public function markAsRead($conversationId)
+    public function markAsRead($conversationId): JsonResponse
     {
         $userId = auth()->id();
 

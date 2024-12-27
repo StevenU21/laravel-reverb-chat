@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ConversationRequest;
 use App\Models\Conversation;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
+use Illuminate\View\View;
 
 class ConversationController extends Controller
 {
-    public function index()
+    public function index():View
     {
         $userId = auth()->id();
         $conversations = Conversation::forUser($userId)
@@ -28,7 +30,7 @@ class ConversationController extends Controller
 
         return view('conversations.index', compact('conversations'));
     }
-    public function store(ConversationRequest $request)
+    public function store(ConversationRequest $request):RedirectResponse
     {
         $sender = auth()->user()->id;
         $receiver = $request->input('user_id');
