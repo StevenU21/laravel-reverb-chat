@@ -1,13 +1,13 @@
 <x-app-layout>
     <style>
-        #message-container {
+        #chatbot-message-container {
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
         }
 
         /* Estilo para el contenedor del indicador de escritura */
-        #typing-indicator {
+        #chatbot-typing-indicator {
             height: 20px;
             /* Ajusta la altura según sea necesario */
         }
@@ -22,19 +22,19 @@
                         <div>
                             <h1 class="text-2xl font-bold text-gray-800 leading-tight">Chatbot</h1>
                             <!-- Indicador de escritura -->
-                            <div id="typing-indicator" class="text-gray-600 mt-2"></div>
+                            <div id="chatbot-typing-indicator" class="text-gray-600 mt-2"></div>
                         </div>
                     </div>
 
                     <!-- Contenedor de mensajes -->
-                    <div id="message-container"
+                    <div id="chatbot-message-container"
                         class="bg-gray-100 p-4 rounded-lg shadow-md h-96 overflow-y-scroll flex-grow">
                     </div>
 
                     <!-- Caja de texto -->
-                    <form id="message-form" class="mt-4">
+                    <form id="chatbot-message-form" class="mt-4">
                         <div class="flex">
-                            <input type="text" name="content" id="message-content"
+                            <input type="text" name="content" id="chatbot-message-content"
                                 class="w-full p-2 border border-gray-300 rounded-l-lg"
                                 placeholder="Type your message here...">
                             <button type="submit"

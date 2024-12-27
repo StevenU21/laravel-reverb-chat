@@ -1,13 +1,13 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const messageForm = document.getElementById('message-form');
-    const messageContentInput = document.getElementById('message-content');
-    const messageContainer = document.getElementById('message-container');
-    const typingIndicator = document.getElementById('typing-indicator');
+    const chatbotMessageForm = document.getElementById('chatbot-message-form');
+    const chatbotMessageContentInput = document.getElementById('chatbot-message-content');
+    const chatbotMessageContainer = document.getElementById('chatbot-message-container');
+    const chatbotTypingIndicator = document.getElementById('chatbot-typing-indicator');
 
-    messageForm.addEventListener('submit', async function (e) {
+    chatbotMessageForm.addEventListener('submit', async function (e) {
         e.preventDefault();
 
-        const messageContent = messageContentInput.value.trim();
+        const messageContent = chatbotMessageContentInput.value.trim();
 
         if (!validateMessage(messageContent)) {
             alert('Por favor, escribe un mensaje.');
@@ -15,10 +15,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         displayUserMessage(messageContent);
-        messageContentInput.value = '';
-        scrollToBottom(messageContainer);
+        chatbotMessageContentInput.value = '';
+        scrollToBottom(chatbotMessageContainer);
 
-        typingIndicator.textContent = 'Chatbot is typing...';
+        chatbotTypingIndicator.textContent = 'Chatbot is typing...';
 
         try {
             const response = await sendMessageToServer(messageContent);
@@ -26,8 +26,8 @@ document.addEventListener('DOMContentLoaded', function () {
         } catch (error) {
             displayErrorMessage();
         } finally {
-            typingIndicator.textContent = '';
-            scrollToBottom(messageContainer);
+            chatbotTypingIndicator.textContent = '';
+            scrollToBottom(chatbotMessageContainer);
         }
     });
 
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>
             </div>
         `;
-        messageContainer.insertAdjacentHTML('beforeend', userMessageHtml);
+        chatbotMessageContainer.insertAdjacentHTML('beforeend', userMessageHtml);
     }
 
     function displayBotMessage(message) {
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>
             </div>
         `;
-        messageContainer.insertAdjacentHTML('beforeend', botMessageHtml);
+        chatbotMessageContainer.insertAdjacentHTML('beforeend', botMessageHtml);
     }
 
     function displayErrorMessage() {
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>
             </div>
         `;
-        messageContainer.insertAdjacentHTML('beforeend', errorMessageHtml);
+        chatbotMessageContainer.insertAdjacentHTML('beforeend', errorMessageHtml);
     }
 
     function scrollToBottom(container) {
