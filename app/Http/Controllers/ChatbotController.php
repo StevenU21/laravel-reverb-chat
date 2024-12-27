@@ -3,11 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ChatbotRequest;
+use App\Services\ChatbotService;
 use Illuminate\Http\JsonResponse;
 use OpenAI\Laravel\Facades\OpenAI;
 
 class ChatbotController extends Controller
 {
+    protected $chatbotService;
+
+    public function __construct(ChatbotService $chatbotService)
+    {
+        $this->chatbotService = $chatbotService;
+    }
+
     public function index()
     {
         return view('chatbot.index');
@@ -20,24 +28,13 @@ class ChatbotController extends Controller
 
         // Enviar el mensaje a OpenAI
         try {
-            $chatbotResponse = OpenAI::chat()->create([
-                'model' => 'gpt-3.5-turbo',
-                'messages' => [
-                    [
-                        'role' => 'system',
-                        'content' => 'You are a helpful assistant.'
-                    ],
-                    [
-                        'role' => 'user',
-                        'content' => $userMessage
-                    ]
-                ]
-            ]);
+            $response = $this->chatbotService->sendMessageToOpenAI($userMessage);
 
-            // Retornar una respuesta con el mensaje de éxito y la respuesta del chatbot
             return response()->json([
                 'message' => 'Mensaje enviado correctamente, procesando...',
-                'bot_message' => $chatbotResponse['choices'][0]['message']['content']
+                'bot_message' => $response['bot_message'],
+                'input_tokens' => $response['input_tokens'],
+                'output_tokens' => $response['output_tokens']
             ]);
         } catch (\Exception $e) {
             // Si ocurre un error, devolver un mensaje de error

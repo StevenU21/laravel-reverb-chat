@@ -23,6 +23,11 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             const response = await sendMessageToServer(messageContent);
             displayBotMessage(response.bot_message);
+
+            // Imprimir los tokens en la consola
+            console.log(`Input Tokens: ${response.input_tokens}`);
+            console.log(`Output Tokens: ${response.output_tokens}`);
+            console.log('Total tokens:', response.input_tokens + response.output_tokens);
         } catch (error) {
             displayErrorMessage();
         } finally {
