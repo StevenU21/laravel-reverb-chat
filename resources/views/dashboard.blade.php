@@ -14,7 +14,8 @@
                         <h2 class="text-xl font-semibold text-gray-700 mb-2">User List</h2>
                         <ul class="list-disc list-inside space-y-2">
                             @foreach ($users as $user)
-                                <li class="text-gray-600 flex flex-col sm:flex-row items-start sm:items-center justify-between">
+                                <li
+                                    class="text-gray-600 flex flex-col sm:flex-row items-start sm:items-center justify-between">
                                     <span class="mb-2 sm:mb-0">{{ $user->name }}</span>
                                     <form action="{{ route('conversations.store') }}" method="POST" class="inline">
                                         @csrf

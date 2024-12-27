@@ -11,7 +11,7 @@ class ChatbotRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,24 @@ class ChatbotRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'message' => [
+                'required',
+                'string',
+                'min:1', // Longitud mínima del mensaje
+                'max:500', // Longitud máxima del mensaje
+                'regex:/^[a-zA-Z0-9\s.,!?]+$/', // Solo permite letras, números y algunos caracteres de puntuación
+            ],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'message.required' => 'El mensaje es obligatorio.',
+            'message.string' => 'El mensaje debe ser una cadena de texto.',
+            'message.min' => 'El mensaje debe tener al menos 1 carácter.',
+            'message.max' => 'El mensaje no puede tener más de 500 caracteres.',
+            'message.regex' => 'El mensaje contiene caracteres no permitidos.',
         ];
     }
 }

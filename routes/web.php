@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ChatbotController;
+// use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MessageController;
@@ -24,7 +25,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/messages/{conversationId}', [MessageController::class, 'markAsRead'])->name('messages.markAsRead');
 
     // ChatBot Routes //
-    Route::get('/chatbot', [ChatbotController::class, 'index'])->name('chatbot.index');
+    Route::prefix('chatbot')->name('chatbot.')->group(function () {
+        Route::get('/', [ChatbotController::class, 'index'])->name('index');
+        Route::post('/post', [ChatbotController::class, 'askGPT'])->name('askGPT');
+    });
 
     // News Routes //
 });

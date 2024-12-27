@@ -18,47 +18,17 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg h-full flex flex-col">
                 <!-- Chat de la Conversación -->
                 <div class="w-full bg-white p-6 border-l border-gray-200 flex flex-col">
-                    <!-- Botón de "Regresar a Conversaciones" (visible solo en móviles) -->
                     <div class="mb-4 flex justify-between items-center">
                         <div>
-                            <h1 class="text-2xl font-bold text-gray-800 leading-tight">Nombre del Receptor</h1>
+                            <h1 class="text-2xl font-bold text-gray-800 leading-tight">Chatbot</h1>
                             <!-- Indicador de escritura -->
                             <div id="typing-indicator" class="text-gray-600 mt-2"></div>
                         </div>
-                        <select
-                            class="bg-white border border-gray-300 text-gray-700 py-2 px-8 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                            <option value="" disabled selected>Modelo del Bot</option>
-                            <option value="modelo1">GPT 3.5</option>
-                            <option value="modelo2">GPT 4o</option>
-                            <option value="modelo3">GTP 4</option>
-                        </select>
                     </div>
+
                     <!-- Contenedor de mensajes -->
                     <div id="message-container"
                         class="bg-gray-100 p-4 rounded-lg shadow-md h-96 overflow-y-scroll flex-grow">
-                        <div class="mb-4">
-                            <!-- Mensaje enviado por el usuario -->
-                            <div class="text-right">
-                                <div
-                                    class="inline-block bg-blue-500 text-white p-2 rounded-lg max-w-full break-words fade-in">
-                                    <div>Contenido del mensaje enviado</div>
-                                    <div class="text-xs text-gray-200 mt-1 flex items-center justify-end space-x-1">
-                                        <span>Fecha y hora</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-4">
-                            <!-- Mensaje recibido -->
-                            <div class="text-left">
-                                <div
-                                    class="inline-block bg-gray-300 text-gray-900 p-2 rounded-lg max-w-full break-words">
-                                    <div class="font-bold">Nombre del remitente</div>
-                                    <div>Contenido del mensaje recibido</div>
-                                    <div class="text-xs text-gray-600 mt-1">Fecha y hora</div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                     <!-- Caja de texto -->
@@ -75,5 +45,97 @@
             </div>
         </div>
     </div>
-    {{-- @include('components.message_js') --}}
+
+    <!-- Incluir el token CSRF para las solicitudes AJAX -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <!-- Incluir el script de jQuery y el script del chatbot -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Capturar el evento de envío del formulario
+            $('#message-form').on('submit', function (e) {
+                e.preventDefault(); // Prevenir el envío predeterminado del formulario
+
+                const messageContent = $('#message-content').val().trim();
+                const messageContainer = $('#message-container');
+
+                // Validar que el mensaje no esté vacío
+                if (messageContent === '') {
+                    alert('Por favor, escribe un mensaje.');
+                    return;
+                }
+
+                // Mostrar el mensaje del usuario en el contenedor
+                const userMessageHtml = `
+                    <div class="mb-4 text-right">
+                        <div class="inline-block bg-blue-500 text-white p-2 rounded-lg max-w-full break-words">
+                            <div>${messageContent}</div>
+                            <div class="text-xs text-gray-200 mt-1 flex items-center justify-end">
+                                <span>${new Date().toLocaleTimeString()}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                messageContainer.append(userMessageHtml);
+
+                // Limpiar el input
+                $('#message-content').val('');
+
+                // Scroll al final
+                messageContainer.scrollTop(messageContainer[0].scrollHeight);
+
+                // Mostrar el indicador de "escribiendo"
+                $('#typing-indicator').text('Chatbot is typing...');
+
+                // Enviar la solicitud AJAX al servidor
+                $.ajax({
+                    url: '/chatbot/post', // Ruta a la que se enviará la solicitud
+                    method: 'POST',
+                    data: {
+                        message: messageContent
+                    }, // Enviamos el mensaje del usuario
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Token CSRF
+                    },
+                    success: function (response) {
+                        // Ocultar el indicador de "escribiendo"
+                        $('#typing-indicator').text('');
+
+                        // Mostrar la respuesta del chatbot
+                        const botMessageHtml = `
+                            <div class="mb-4 text-left">
+                                <div class="inline-block bg-gray-300 text-gray-900 p-2 rounded-lg max-w-full break-words">
+                                    <div class="font-bold">Chatbot</div>
+                                    <div>${response.bot_message}</div>
+                                    <div class="text-xs text-gray-600 mt-1">${new Date().toLocaleTimeString()}</div>
+                                </div>
+                            </div>
+                        `;
+                        messageContainer.append(botMessageHtml);
+
+                        // Scroll al final
+                        messageContainer.scrollTop(messageContainer[0].scrollHeight);
+                    },
+                    error: function (xhr) {
+                        // Ocultar el indicador de "escribiendo"
+                        $('#typing-indicator').text('');
+
+                        // Manejar errores
+                        const errorMessageHtml = `
+                            <div class="mb-4 text-left">
+                                <div class="inline-block bg-red-500 text-gray p-2 rounded-lg max-w-full break-words">
+                                    <div>Error: No se pudo procesar tu mensaje. Inténtalo más tarde.</div>
+                                </div>
+                            </div>
+                        `;
+                        messageContainer.append(errorMessageHtml);
+
+                        // Scroll al final
+                        messageContainer.scrollTop(messageContainer[0].scrollHeight);
+                    }
+                });
+            });
+        });
+    </script>
 </x-app-layout>

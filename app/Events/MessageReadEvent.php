@@ -14,11 +14,10 @@ class MessageReadEvent implements ShouldBroadcastNow
     public $conversationId;
     public $userId;
 
-    public function __construct($conversationId, $userId, $messages)
+    public function __construct($conversationId, $userId)
     {
         $this->conversationId = $conversationId;
         $this->userId = $userId;
-        $this->messages = $messages;
     }
 
     public function broadcastOn()
@@ -33,5 +32,4 @@ class MessageReadEvent implements ShouldBroadcastNow
             'conversation_id' => $this->conversationId,
         ];
     }
-
 }
