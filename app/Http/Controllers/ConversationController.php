@@ -57,8 +57,8 @@ class ConversationController extends Controller
         // Paginate messages
         $messages = $conversation->messages()->with('user')->orderBy('created_at', 'asc')->get();
 
-        $sender = Conversation::getSender($conversation, $userId);
-        $receiver = Conversation::getReceiver($conversation, $userId);
+        $sender = Conversation::getSender($conversation);
+        $receiver = Conversation::getReceiver($conversation);
 
         return view('conversations.show', compact('conversation', 'sender', 'receiver', 'messages', 'conversations'));
     }
