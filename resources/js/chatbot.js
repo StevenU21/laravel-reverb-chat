@@ -4,6 +4,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const chatbotMessageContainer = document.getElementById('chatbot-message-container');
     const chatbotTypingIndicator = document.getElementById('chatbot-typing-indicator');
 
+    if (!chatbotMessageForm || !chatbotMessageContentInput || !chatbotMessageContainer || !chatbotTypingIndicator) {
+        console.error('One or more required elements are missing from the DOM.');
+        return;
+    }
+
     chatbotMessageForm.addEventListener('submit', async function (e) {
         e.preventDefault();
 
@@ -84,8 +89,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     async function sendMessageToServer(message) {
-        return axios.post('/chatbot/post', 
-            { message }, 
+        return axios.post('/chatbot/post',
+            { message },
             {
                 headers: {
                     'Content-Type': 'application/json',
