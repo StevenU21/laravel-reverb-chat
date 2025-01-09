@@ -21,10 +21,14 @@
 ---
 
 ### 📋 Requisitos
-- PHP >= 8.0
+- PHP >= 8.2
 - Composer
 - Node.js & npm
-- Redis o cualquier servicio compatible con Laravel Reverb
+- MySQL/SQLite
+- Laravel 10/11
+- Laravel Reverb
+- Laravel Echo JS
+- Axios
 
 ---
 
