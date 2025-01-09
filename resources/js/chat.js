@@ -8,6 +8,12 @@ function initializeChat() {
     const messageContent = document.getElementById('message-content');
     const messageContainer = document.getElementById('message-container');
     const typingIndicator = document.getElementById('typing-indicator');
+
+    if (!messageForm || !messageContent || !messageContainer || !typingIndicator) {
+        console.error('One or more required elements are missing from the DOM.');
+        return;
+    }
+
     let isUserScrollingUp = false;
     let typingTimer;
     const typingInterval = 1000;
@@ -24,15 +30,37 @@ function initializeChat() {
             markMessagesAsRead(); // Marcar como leídos cuando el usuario abre la conversación
         })
         .listen('MessageSentEvent', (e) => {
-            handleNewMessage(e);
+            try {
+                handleNewMessage(e);
 
-            if (isUserInChat) {
-                markMessagesAsRead();
+                if (isUserInChat) {
+                    markMessagesAsRead();
+                }
+            } catch (error) {
+                console.error('Error handling MessageSentEvent:', error);
             }
         })
-        .listen('MessageReadEvent') // Escuchar evento de mensaje leído
-        .listenForWhisper('typing', handleUserTyping)
-        .listenForWhisper('stopTyping', handleUserStoppedTyping);
+        .listen('MessageReadEvent', (e) => {
+            try {
+                // Handle MessageReadEvent if needed
+            } catch (error) {
+                console.error('Error handling MessageReadEvent:', error);
+            }
+        })
+        .listenForWhisper('typing', (e) => {
+            try {
+                handleUserTyping(e);
+            } catch (error) {
+                console.error('Error handling typing whisper:', error);
+            }
+        })
+        .listenForWhisper('stopTyping', (e) => {
+            try {
+                handleUserStoppedTyping(e);
+            } catch (error) {
+                console.error('Error handling stopTyping whisper:', error);
+            }
+        });
 
     scrollToBottom();
 
@@ -162,6 +190,4 @@ function initializeChat() {
             console.error("Failed to mark messages as read:", error);
         }
     }
-
-
 }

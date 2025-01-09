@@ -22,13 +22,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
         try {
             const response = await sendMessageToServer(messageContent);
-            displayBotMessage(response.bot_message);
+            displayBotMessage(response.data.bot_message);
 
             // Imprimir los tokens en la consola
-            console.log(`Input Tokens: ${response.input_tokens}`);
-            console.log(`Output Tokens: ${response.output_tokens}`);
-            console.log('Total tokens:', response.input_tokens + response.output_tokens);
+            console.log(`Input Tokens: ${response.data.input_tokens}`);
+            console.log(`Output Tokens: ${response.data.output_tokens}`);
+            console.log('Total tokens:', response.data.input_tokens + response.data.output_tokens);
         } catch (error) {
+            console.error('Error:', error);
             displayErrorMessage();
         } finally {
             chatbotTypingIndicator.textContent = '';
@@ -83,19 +84,14 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     async function sendMessageToServer(message) {
-        const response = await fetch('/chatbot/post', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: JSON.stringify({ message })
-        });
-
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-
-        return response.json();
+        return axios.post('/chatbot/post', 
+            { message }, 
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            }
+        );
     }
 });
