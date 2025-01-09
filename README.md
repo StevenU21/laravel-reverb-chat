@@ -1,67 +1,121 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 📢 Laravel Reverb Chat
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+### 💡 Descripción
+**Laravel Reverb Chat** es un sistema de mensajería en tiempo real construido con **Laravel Reverb**, que permite la comunicación instantánea entre usuarios. Este proyecto incorpora buenas prácticas de desarrollo, separación de responsabilidades y funcionalidad extendida mediante integración con la API de OpenAI para respuestas automáticas.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### 🚀 Características
+- **Eventos en tiempo real**:
+  - `MessageReadEvent`
+  - `MessageSentEvent`
+  - `UserTypingEvent`
+- **Controladores**:
+  - `ConversationController` para la gestión de conversaciones.
+  - `MessageController` para la administración de mensajes.
+- **Integración con Axios** para manejar los datos JSON en las vistas.
+- **Laravel Echo** para gestionar las suscripciones en tiempo real.
+- **Chatbot** integrado usando la API de OpenAI con el modelo GPT-4o-mini.
+- **Autorización de conversaciones** mediante policies.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 📋 Requisitos
+- PHP >= 8.0
+- Composer
+- Node.js & npm
+- Redis o cualquier servicio compatible con Laravel Reverb
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 🛠 Instalación
+1. **Clonar el repositorio**
+```bash
+ git clone https://github.com/tu-usuario/laravel-reverb-chat.git
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+2. **Instalar dependencias**
+```bash
+composer install
+npm install
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+3. **Configurar el entorno**
+Copiar el archivo `.env.example` y renombrarlo como `.env`. Luego, configurar las siguientes variables:
+```env
+BROADCAST_DRIVER=redis
+CACHE_DRIVER=redis
+QUEUE_CONNECTION=redis
+LARAVEL_ECHO_SERVER_PORT=6001
+OPENAI_API_KEY=tu-clave-api
+```
 
-## Laravel Sponsors
+4. **Migrar la base de datos**
+```bash
+php artisan migrate
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+5. **Levantar el servidor**
+- Para iniciar el servicio Reverb en modo normal:
+  ```bash
+  php artisan reverb:start
+  ```
+- Para iniciar con depuración:
+  ```bash
+  php artisan reverb:start ---debug
+  ```
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### 🌟 Uso
+1. **Crear una conversación**:
+   - Una conversación solo puede incluir a dos participantes.
+2. **Enviar y recibir mensajes**:
+   - Los mensajes se sincronizan en tiempo real entre ambos usuarios.
+3. **Interacciones con el chatbot**:
+   - Haz preguntas al chatbot integrado y recibe respuestas basadas en GPT-4o-mini.
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 📦 Arquitectura
+- **Services**:
+  - `ChatbotService` para manejar la lógica del chatbot.
+- **Requests personalizados**:
+  - `ChatbotRequest`
+  - `MessageRequest`
+  - `ConversationRequest`
+- **Policies**:
+  - `ConversationPolicy` asegura que solo los usuarios participantes puedan acceder a una conversación.
+- **Eventos**:
+  - Manejo eficiente de eventos en tiempo real.
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 💻 Tecnologías
+- **Laravel Reverb**: Comunicación en tiempo real.
+- **Laravel Echo**: Integración con WebSockets.
+- **Axios**: Para manejar solicitudes HTTP desde las vistas.
+- **Redis**: Como backend para colas y broadcasting.
+- **OpenAI GPT-4o-mini**: Para funcionalidades de chatbot.
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 🛡 Seguridad
+- **Policies**:
+  - Implementadas para asegurar que solo los usuarios autorizados puedan acceder a sus respectivas conversaciones.
+- **Validación de Requests**:
+  - Uso de Requests personalizados para garantizar datos consistentes y seguros.
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-"# laravel-reverb-chat" 
+### 🔧 Comandos útiles
+- **Iniciar el servicio Reverb**:
+  ```bash
+  php artisan reverb:start
+  ```
+- **Modo depuración**:
+  ```bash
+  php artisan reverb:start ---debug
+  ```
+
+---
