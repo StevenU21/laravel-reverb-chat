@@ -29,6 +29,8 @@
 - Laravel Reverb
 - Laravel Echo JS
 - Axios
+- Laravel Open AI
+- Open AI API KEY
 
 ---
 
