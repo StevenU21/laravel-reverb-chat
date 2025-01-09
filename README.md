@@ -31,7 +31,7 @@
 ### 🛠 Instalación
 1. **Clonar el repositorio**
 ```bash
- git clone https://github.com/tu-usuario/laravel-reverb-chat.git
+ git clone https://github.com/StevenU21/laravel-reverb-chat.git
 ```
 
 2. **Instalar dependencias**
